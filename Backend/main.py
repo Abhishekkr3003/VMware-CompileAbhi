@@ -1,13 +1,16 @@
+from crypt import methods
+import json
 import math
 import os
 import subprocess
 import time
-from flask import Flask, request
+from tkinter import EXCEPTION
+from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
 import uuid
 
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, storage
 
 cred = credentials.Certificate("key.json")
 firebase_admin.initialize_app(cred)
@@ -17,10 +20,91 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
-    db = firestore.client()
-    todo_ref = db.collection('todos')
+def home():
+    # db = firestore.client()
+    # todo_ref = db.collection(u'todos').document(u'doc2').collection(u'collection2').document(u'doc2').set({
+    #     "name": u'New Delhi', "state": "Delhi", "country": u'India'
+    # })
+    # docs = db.collection(u'todos').stream()
+    # print(docs)
+    # for doc in docs:
+    #     print(f'{doc.id} => {doc.to_dict()}')
     return "<p>Server is LIVE.</p>"
+
+
+@app.route("/userData", methods=["POST"])
+def get_user_data():
+    try:
+        user = request.json['userId']
+        db = firestore.client()
+        doc = db.collection(u'users').document(user).get()
+        if doc.exists:
+            user_data = doc.to_dict()
+            user_data["Success"] = True
+            return user_data
+        else:
+            user_data = request.json
+            user_data['directoryStructure'] = '[{id:"1", type: "folder", name: "root", children=[ { id = ' + \
+                user+', type: "file", name: '+user+' }] }];'
+            db.collection(u'users').document(user).set(user_data)
+            user_data["Success"] = True
+            return user_data
+
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
+
+
+@app.route("/updateDirectory", methods=["PATCH"])
+def update_directory():
+    try:
+        user = request.json['userId']
+        new_directory_structure = request.json['directoryStructure']
+        db = firestore.client()
+        db.collection(u'users').document(user).update(
+            {'directoryStructure': new_directory_structure})
+        response = {
+            "Success": True
+        }
+        return response
+
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
+
+
+@app.route("/saveFile", methods=["POST"])
+def run_cpp_():
+    try:
+        file_id = request.form['fileId']
+        user_id = request.form['userId']
+        file = request.files['file']
+        file.save(os.path.join(
+            "Static", secure_filename(str(file_id))))
+        fileName = f"./Static/{file_id}"
+        bucket = storage.bucket("compileabhi-6c85a.appspot.com")
+        blob = bucket.blob(f"{user_id}/{file_id}")
+        blob.upload_from_filename(fileName)
+        blob.make_public()
+        url = blob.public_url
+        os.remove(f"./Static/{file_id}")
+        response = {
+            "Success": True,
+            "URL": url
+        }
+        return response
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
 
 
 @app.route("/submit", methods=["POST"])
@@ -32,7 +116,8 @@ def run_cpp():
         # print(data)
         unique_filename = str(uuid.uuid4())
         code = request.files['code']
-        code.save(os.path.join("Static", secure_filename(unique_filename + ".cpp")))
+        code.save(os.path.join(
+            "Static", secure_filename(unique_filename + ".cpp")))
         print("here")
         temp = subprocess.Popen(['g++', f'./Static/{unique_filename}.cpp', '-o', f'Static/{unique_filename}'],
                                 stdout=subprocess.PIPE,
@@ -43,9 +128,10 @@ def run_cpp():
             try:
                 temp = subprocess.Popen([f"./Static/{unique_filename}"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE)
+                print(inp)
                 temp.stdin.write(inp)
                 begin = time.time()
-                runtime = temp.communicate(timeout=1)
+                runtime = temp.communicate(timeout=10)
                 os.remove(f"./Static/{unique_filename}")
                 end = time.time()
                 if runtime[1].decode('utf-8') == '':
@@ -92,4 +178,3 @@ def run_cpp():
             "Error": str(e)
         }
         return response
-
