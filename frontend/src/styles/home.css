@@ -1,0 +1,14 @@
+.home {
+    height: 100vh;
+}
+
+.headerDiv {
+    height: 10%;
+}
+
+.workbench {
+    height: 90%;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+}
