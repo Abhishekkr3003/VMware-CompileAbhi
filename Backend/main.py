@@ -21,15 +21,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    # db = firestore.client()
-    # todo_ref = db.collection(u'todos').document(u'doc2').collection(u'collection2').document(u'doc2').set({
-    #     "name": u'New Delhi', "state": "Delhi", "country": u'India'
-    # })
-    # docs = db.collection(u'todos').stream()
-    # print(docs)
-    # for doc in docs:
-    #     print(f'{doc.id} => {doc.to_dict()}')
-    return "<p>Server is LIVE.</p>"
+    return "<h1>Server is LIVE.</h1>"
 
 
 @app.route("/userData", methods=["POST"])
@@ -44,7 +36,7 @@ def get_user_data():
             return user_data
         else:
             user_data = request.json
-            user_data['directoryStructure'] = '[{id:"1", type: "folder", name: "root", children=[ { id = ' + \
+            user_data['directoryStructure'] = '[{id:"root", type: "folder", name: "root", children=[ { id = ' + \
                 user+', type: "file", name: '+user+' }] }];'
             db.collection(u'users').document(user).set(user_data)
             user_data["Success"] = True
