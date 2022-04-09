@@ -1,11 +1,8 @@
-from crypt import methods
-import json
 import math
 import os
 import subprocess
 import time
-from tkinter import EXCEPTION
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from werkzeug.utils import secure_filename
 import uuid
 
@@ -110,7 +107,7 @@ def run_cpp():
         code = request.files['code']
         code.save(os.path.join(
             "Static", secure_filename(unique_filename + ".cpp")))
-        print("here")
+        # print("here")
         temp = subprocess.Popen(['g++', f'./Static/{unique_filename}.cpp', '-o', f'Static/{unique_filename}'],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
@@ -127,11 +124,11 @@ def run_cpp():
                 os.remove(f"./Static/{unique_filename}")
                 end = time.time()
                 if runtime[1].decode('utf-8') == '':
-                    print("Output: ")
+                    # print("Output: ")
                     output = runtime[0].decode('utf-8')
-                    print(output)
+                    # print(output)
                     time_taken = math.ceil((end - begin) * 1000)
-                    print(f"Total runtime of the program is {time_taken}ms")
+                    # print(f"Total runtime of the program is {time_taken}ms")
                     response = {
                         "Success": True,
                         "Output": output,
@@ -139,9 +136,9 @@ def run_cpp():
                     }
                     return response
                 else:
-                    print("Error: ")
+                    # print("Error: ")
                     error_ret = runtime[1].decode('utf-8')
-                    print(error_ret)
+                    # print(error_ret)
                     response = {
                         "Success": False,
                         "Type": "RunTime Error",
@@ -149,7 +146,7 @@ def run_cpp():
                     }
                     return response
             except Exception as e:
-                print("TLE")
+                # print("TLE")
                 response = {
                     "Success": False,
                     "Type": "TLE"
@@ -163,7 +160,7 @@ def run_cpp():
             }
             return response
     except Exception as e:
-        print(e)
+        # print(e)
         response = {
             "Success": False,
             "Type": "Unknown Error",
