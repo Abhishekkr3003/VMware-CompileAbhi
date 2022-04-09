@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import Directory from "../components/Directory";
 import IO from "../components/IO";
 import Editor from "../components/Editor";
-import structure from "../assets/structure";
 import { useDispatch } from "react-redux";
 import { setStructure } from "../actions";
 
@@ -14,6 +13,14 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const structure = [
+      {
+        name: "root",
+        id: "root",
+        type: "folder",
+        childrens: [],
+      },
+    ];
     dispatch(setStructure(structure));
   }, []);
 
