@@ -1,0 +1,10 @@
+.folderChildren {
+    margin-left: 10%;
+}
+
+.folderActionDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 14vw;
+}

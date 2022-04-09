@@ -1,8 +1,51 @@
 .directory {
-    width: 20%;
-    background-color: bisque;
+    width: 15%;
+    border: solid;
+    border-top: none;
+    border-width: 1px;
+    border-color: #262626;
+    height: 100%;
 }
 
 .directoryCollapsed {
-    width: 2%;
+    background-color: #262626;
+    width: 3%;
+}
+
+.directoryCollapsedButton {
+    margin-left: 4%;
+    border: none;
+    border-color: #262626;
+}
+
+.directoryCollapsedButton svg{
+    font-size: 18px;
+}
+
+.dirFirstDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: solid;
+    border-width: 1px;
+}
+
+.dirFirstDivHeading {
+    font-size: 1rem;
+    margin-top: 3%;
+}
+
+.dirFirstDivButton {
+    border: none;
+}
+
+.dirFirstDivButton svg {
+    font-size: 18px;
+}
+
+.dirTree {
+    padding-left: 9%;
+    height: 95%;
+    overflow: auto;
 }
