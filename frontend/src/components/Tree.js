@@ -5,28 +5,14 @@ import { AiOutlineFile, AiOutlineFolder } from "react-icons/ai";
 import { SiCplusplus, SiPython, SiC } from "react-icons/si";
 
 export default function Tree({ structure }) {
-  const [item, setItem] = useState();
-
-  return structure.map((itm) => {
-    setItem(itm);
-    console.log(item);
+  return structure.map((item) => {
     if (item.type === "file") {
-      return <File name={item.name} />;
+      return <File name={item.name} id={item.id} />;
     }
 
     if (item.type === "folder") {
       return (
-        <Folder
-          addNewFile={(name) => {
-            var file = {
-              type: "file",
-              name: name,
-            };
-            console.log("item", item);
-            item.childrens.push(file);
-          }}
-          name={item.name}
-        >
+        <Folder name={item.name} id={item.id}>
           <Tree structure={item.childrens} />
         </Folder>
       );

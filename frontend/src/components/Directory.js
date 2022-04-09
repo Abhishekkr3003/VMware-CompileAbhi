@@ -1,6 +1,6 @@
 // code director file structure
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/directory.css";
 import { Button } from "react-bootstrap";
 import Tree from "./Tree";
@@ -16,6 +16,8 @@ export default function Directory() {
   const [collapsed, setCollapsed] = useState(false);
 
   const structure = useSelector((state) => state.structure);
+
+  console.log(structure);
 
   if (collapsed) {
     return (
