@@ -6,7 +6,6 @@ import IO from "../components/IO";
 import Editor from "../components/Editor";
 import { useDispatch } from "react-redux";
 import { setStructure } from "../actions";
-
 import "../styles/home.css";
 
 export default function Home() {
