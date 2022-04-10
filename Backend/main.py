@@ -28,7 +28,7 @@ def get_user_data():
     try:
         user = request.json['userId']
         db = firestore.client()
-        doc = db.collection(u'users').document(user).get()
+        doc = db.collection(user).document(u'info').get()
         if doc.exists:
             user_data = doc.to_dict()
             user_data["Success"] = True
@@ -37,7 +37,7 @@ def get_user_data():
             user_data = request.json
             user_data['directoryStructure'] = '[{id:"root", type: "folder", name: "root", children=[ { id = ' + \
                 user+', type: "file", name: '+user+' }] }];'
-            db.collection(u'users').document(user).set(user_data)
+            db.collection(user).document(u'info').set(user_data)
             user_data["Success"] = True
             return user_data
 
@@ -70,25 +70,79 @@ def update_directory():
         return response
 
 
-@app.route("/publish", methods=["POST"])
-def run_cpp_():
+@app.route("/add-file", methods=["POST"])
+def add_file():
     try:
-        file_id = request.form['fileId']
-        user_id = request.form['userId']
-        file = request.files['file']
-        file.save(os.path.join(
-            "Static", secure_filename(str(file_id))))
-        fileName = f"./Static/{file_id}"
-        bucket = storage.bucket("compileabhi-6c85a.appspot.com")
-        blob = bucket.blob(f"{user_id}/{file_id}")
-        blob.upload_from_filename(fileName)
-        blob.make_public()
-        url = blob.public_url
-        os.remove(f"./Static/{file_id}")
+        
+        file_data=request.json
+        user_id=file_data['userId']
+        file_id=file_data['fileId']
+        file_data.pop('userId')
+        db = firestore.client()
+        db.collection(user_id).document(file_id).set(file_data)
         response = {
             "Success": True,
-            "URL": url
         }
+        return response
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
+    
+@app.route("/update-file", methods=["POST"])
+def update_file():
+    try:
+        
+        file_data=request.json
+        user_id=file_data['userId']
+        file_id=file_data['fileId']
+        db = firestore.client()
+        db.collection(user_id).document(file_id).update({
+            u"code":file_data['code']
+            })
+        response = {
+            "Success": True,
+        }
+        return response
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
+
+@app.route("/read-file", methods=["POST"])
+def read_file():
+    try:
+        file_data=request.json
+        user_id=file_data['userId']
+        file_id=file_data['fileId']
+        file_data.pop('userId')
+        db = firestore.client()
+        doc=db.collection(user_id).document(file_id).get()
+        response=doc.to_dict()
+        response["Success"]=True
+        return response
+    except Exception as e:
+        response = {
+            "Success": False,
+            "Error": str(e)
+        }
+        return response
+
+@app.route("/directory", methods=["POST"])
+def read_directory():
+    try:
+        file_data=request.json
+        user_id=file_data['userId']
+        db = firestore.client()
+        docs=db.collection(user_id).stream()
+        response={"Success":True}
+        for doc in docs:
+            if doc.id!="info":
+                response[doc.id] = doc.to_dict()
         return response
     except Exception as e:
         response = {
