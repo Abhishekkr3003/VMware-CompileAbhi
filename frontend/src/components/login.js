@@ -1,11 +1,26 @@
 import React from "react";
 import { signInWithGoogle } from "../firebase/firebase.utils";
+// import { getAuth, signOut } from "firebase/auth";
 import { Button } from "react-bootstrap";
+import { setUser, removeUser } from "../actions/index";
+import { useDispatch } from "react-redux";
+
+// const auth = getAuth();
+var user = null;
+const handleClick = async () => {
+  user = await signInWithGoogle();
+  console.log(user.email);
+};
 export default function Login() {
+  const dispatch = useDispatch();
+
+  // return <Button variant="light">LogOut</Button>;
+
   return (
     <Button
       variant="light"
-      //   className="login-provider-button" /*onClick={signInWithGoogle}*/
+      className="login-provider-button"
+      onClick={handleClick}
     >
       {/* <img
         src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
