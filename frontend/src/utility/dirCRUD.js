@@ -77,6 +77,5 @@ export const update = (name, itemId, structure) => {
 
 export const dlte = (itemId, structure) => {
   deleteHelper(itemId);
-  localStorage.setItem("newStruct", JSON.stringify(structure[0]));
   return structure;
 };

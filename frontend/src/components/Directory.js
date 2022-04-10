@@ -4,12 +4,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/directory.css";
 import { Button } from "react-bootstrap";
 import Tree from "./Tree";
-import {
-  AiFillFileAdd,
-  AiFillFolderAdd,
-  AiOutlineDoubleLeft,
-  AiOutlineDoubleRight,
-} from "react-icons/ai";
+import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
 import { useSelector } from "react-redux";
 
 export default function Directory() {
@@ -17,19 +12,19 @@ export default function Directory() {
 
   const structure = useSelector((state) => state.structure);
 
+  useEffect(() => {}, [structure]);
+
   console.log(structure);
 
   if (collapsed) {
     return (
-      <div className="directoryCollapsed">
-        <Button
-          variant="outline-light"
-          className="directoryCollapsedButton"
-          onClick={() => setCollapsed(false)}
-        >
-          <AiOutlineDoubleRight />
-        </Button>
-      </div>
+      <Button
+        variant="dark"
+        className="directoryCollapsedButton"
+        onClick={() => setCollapsed(false)}
+      >
+        <AiOutlineDoubleRight />
+      </Button>
     );
   }
 
@@ -38,7 +33,7 @@ export default function Directory() {
       <div className="dirFirstDiv">
         <h1 className="dirFirstDivHeading">My Folder</h1>
         <div>
-          <Button
+          {/* <Button
             variant="outline-dark"
             size="sm"
             className="dirFirstDivButton"
@@ -51,7 +46,7 @@ export default function Directory() {
             className="dirFirstDivButton"
           >
             <AiFillFolderAdd />
-          </Button>
+          </Button> */}
           <Button
             variant="outline-dark"
             size="sm"

@@ -1,4 +1,29 @@
 .editor {
     min-width: 60%;
     flex-grow: 2;
+    position: relative;
+}
+
+.editorFilesOpened{
+    height: 5.2%;
+    display: flex;
+    flex-direction: column;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #262626;
+}
+
+.editFile{
+    height: 95%;
+}
+
+.code{
+    height: 100%;
+    width: 100%;
+}
+
+.runButton{
+    position: absolute;
+    bottom: 5%;
+    right: 2%;
 }

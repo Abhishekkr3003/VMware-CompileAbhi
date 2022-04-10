@@ -1,13 +1,14 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 import App from "./App";
-import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
-import rootReducer from "./reducers/index";
-import thunk from "redux-thunk";
-import { persistStore, persistReducer } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
+import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
+import thunk from "redux-thunk";
+import rootReducer from "./reducers/index";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 const persistConfig = {
   key: "root",
@@ -16,22 +17,21 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const middleware = [thunk];
-
-const store = createStore(
-  persistedReducer,
-  composeEnhancers(applyMiddleware(...middleware))
-);
+const store = configureStore({
+  reducer: persistedReducer,
+  devTools: true,
+  middleware: [thunk],
+});
 
 let persistor = persistStore(store);
 
-ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
+render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById("root")
 );

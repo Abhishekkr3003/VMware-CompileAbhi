@@ -4,8 +4,7 @@ import { CgRename } from "react-icons/cg";
 import { SiCplusplus, SiPython, SiC } from "react-icons/si";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setStructure } from "../actions/index";
-import { update, dlte } from "../utility/dirCRUD";
+import { setStructure, deleteStructure } from "../actions/index";
 
 import "../styles/file.css";
 
@@ -21,9 +20,9 @@ export default function File({ name, id }) {
 
   const onUpdate = (event) => {};
 
-  const onDelete = () => {
-    const newStructure = dlte(id, structure);
-    dispatch(setStructure(newStructure));
+  const onDelete = (event) => {
+    var payload = { itemId: id, structure: structure };
+    dispatch(deleteStructure(payload));
   };
 
   var ext = name.split(".")[1];
@@ -39,8 +38,8 @@ export default function File({ name, id }) {
           variant="outline-dark"
           size="sm"
           className="dirFirstDivButton"
-          onClick={() => {
-            onDelete();
+          onClick={(event) => {
+            onDelete(event);
           }}
         >
           <AiOutlineDelete />
@@ -49,8 +48,8 @@ export default function File({ name, id }) {
           variant="outline-dark"
           size="sm"
           className="dirFirstDivButton"
-          onClick={() => {
-            onUpdate();
+          onClick={(event) => {
+            onUpdate(event);
           }}
         >
           <CgRename />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/folder.css";
 import {
   AiOutlineFolder,
@@ -9,9 +9,13 @@ import {
 } from "react-icons/ai";
 import { VscCollapseAll } from "react-icons/vsc";
 import { Button, Form } from "react-bootstrap";
-import { create, update, dlte } from "../utility/dirCRUD";
 import { useDispatch, useSelector } from "react-redux";
-import { setStructure } from "../actions/index";
+import {
+  setStructure,
+  deleteStructure,
+  updateStructure,
+  createStructure,
+} from "../actions/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -22,6 +26,11 @@ export default function Folder({ name, id, children }) {
     name: "",
     type: "",
   });
+  const [childs, setChilds] = useState([]);
+
+  useEffect(() => {
+    setChilds([children]);
+  }, [children]);
 
   const dispatch = useDispatch();
   const structure = useSelector((state) => state.structure);
@@ -57,22 +66,26 @@ export default function Folder({ name, id, children }) {
 
   const submit = (event) => {
     if (newItem.name != "") {
-      const newStructure = create(newItem.type, newItem.name, id, structure);
-      dispatch(setStructure(newStructure));
+      var payload = {
+        type: newItem.type,
+        name: newItem.name,
+        folderId: id,
+        structure: structure,
+      };
+      dispatch(createStructure(payload));
     } else {
-      toast.error("File Name Cannot Be Empty!");
+      toast.error("Name Cannot Be Empty!");
     }
-    event.preventDefault();
   };
 
   const onDelete = (event) => {
     if (id == "root") {
       toast.error("This folder cannot be deleted");
     } else {
-      const newStructure = dlte(id, structure);
-      dispatch(setStructure(newStructure));
+      var payload = { itemId: id, structure: structure };
+      dispatch(deleteStructure(payload));
     }
-    event.preventDefault();
+    //event.preventDefault();
   };
 
   return (
@@ -87,8 +100,8 @@ export default function Folder({ name, id, children }) {
             variant="outline-dark"
             size="sm"
             className="dirFirstDivButton"
-            onClick={() => {
-              createNewFile();
+            onClick={(event) => {
+              createNewFile(event);
             }}
           >
             <AiOutlineFileAdd />
@@ -97,8 +110,8 @@ export default function Folder({ name, id, children }) {
             variant="outline-dark"
             size="sm"
             className="dirFirstDivButton"
-            onClick={() => {
-              createNewFolder();
+            onClick={(event) => {
+              createNewFolder(event);
             }}
           >
             <AiOutlineFolderAdd />
@@ -115,8 +128,8 @@ export default function Folder({ name, id, children }) {
             variant="outline-dark"
             size="sm"
             className="dirFirstDivButton"
-            onClick={() => {
-              onDelete();
+            onClick={(event) => {
+              onDelete(event);
             }}
           >
             <AiOutlineDelete />
@@ -135,7 +148,7 @@ export default function Folder({ name, id, children }) {
           <Button
             size="sm"
             variant="dark"
-            onClick={() => submit()}
+            onClick={(event) => submit(event)}
             type="submit"
             className="folderFormButton"
           >
@@ -143,7 +156,7 @@ export default function Folder({ name, id, children }) {
           </Button>
         </Form>
       )}
-      {!collapsed && <div className="folderChildren">{children}</div>}
+      {!collapsed && <div className="folderChildren">{childs}</div>}
       <ToastContainer />
     </div>
   );

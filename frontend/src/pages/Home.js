@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Directory from "../components/Directory";
 import IO from "../components/IO";
-import Editor from "../components/Editor";
+import MyEditor from "../components/MyEditor";
 import { useDispatch } from "react-redux";
 import { setStructure } from "../actions";
 import "../styles/home.css";
@@ -30,7 +30,7 @@ export default function Home() {
       </div>
       <div className="workbench">
         <Directory />
-        <Editor />
+        <MyEditor />
         <IO />
       </div>
     </div>

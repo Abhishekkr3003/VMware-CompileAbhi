@@ -14,16 +14,18 @@ import "../styles/header.css";
 export default function Header() {
   return (
     <div className="header">
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Compile-Abhi</Navbar.Brand>
+          <Navbar.Brand className="headerBrand" href="#home">
+            CompileAbhi
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
+              {/* <Nav.Link href="#home">Home</Nav.Link> */}
               {/* add button CSS*/}
               {/* add user state*/}
-              <Login />
+              {/* <Login /> */}
               {/* <Nav.Button>Login</Nav.Button> */}
             </Nav>
           </Navbar.Collapse>

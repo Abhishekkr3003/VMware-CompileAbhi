@@ -1,7 +1,60 @@
 .io {
     width: 20%;
+    width: 15%;
+    border: solid;
+    border-top: none;
+    border-width: 1px;
+    border-color: #262626;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .ioCollapsed {
     width: 2%;
+}
+
+.ioFirstDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: solid;
+    border-width: 1px;
+}
+
+.input{
+    height: 40%;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #262626;
+}
+
+.ioInput{
+    height: 100%;
+    width: 100%;
+}
+
+.output{
+    height: 40%;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #262626;
+}
+
+.outputHeading{
+    height: 10%;
+    background-color: #262626;
+    text-align: center;
+    color: white;
+}
+
+.spaceTime{
+    height: 10%;
+}
+
+.spaceTimeHeading{
+    background-color: #262626;
+    text-align: center;
+    color: white;
 }
