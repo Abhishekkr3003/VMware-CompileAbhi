@@ -21,7 +21,9 @@ def home():
     return "<h1>Server is LIVE.</h1>"
 
 
-@app.route("/userData", methods=["POST"])
+
+
+@app.route("/user", methods=["POST"])
 def get_user_data():
     try:
         user = request.json['userId']
@@ -47,7 +49,7 @@ def get_user_data():
         return response
 
 
-@app.route("/updateDirectory", methods=["PATCH"])
+@app.route("/new-directory", methods=["PATCH"])
 def update_directory():
     try:
         user = request.json['userId']
@@ -68,7 +70,7 @@ def update_directory():
         return response
 
 
-@app.route("/saveFile", methods=["POST"])
+@app.route("/publish", methods=["POST"])
 def run_cpp_():
     try:
         file_id = request.form['fileId']
@@ -96,7 +98,7 @@ def run_cpp_():
         return response
 
 
-@app.route("/submit", methods=["POST"])
+@app.route("/submission", methods=["POST"])
 def run_cpp():
     try:
         inp = request.files['input'].stream.read()
@@ -167,3 +169,78 @@ def run_cpp():
             "Error": str(e)
         }
         return response
+    
+@app.route("/test", methods=["POST"])
+def run_test():
+    try:
+        inp = bytes(request.json['input'],'utf-8')
+        print(type(inp))
+        # with open('Static/input.txt', 'r') as file:
+        #     data = file.read()
+        # print(data)
+        unique_filename = str(uuid.uuid4())
+        code = request.json['code']
+        with open(f'Static/{unique_filename}.cpp', 'w') as file:
+            file.writelines(code)
+        print(code)
+            
+        temp = subprocess.Popen(['g++', f'./Static/{unique_filename}.cpp', '-o', f'Static/{unique_filename}'],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+        compiled = temp.communicate()
+        os.remove(f"./Static/{unique_filename}.cpp")
+        if compiled[1].decode('utf-8') == '':
+            try:
+                temp = subprocess.Popen([f"./Static/{unique_filename}"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE)
+                print(inp)
+                temp.stdin.write(inp)
+                begin = time.time()
+                runtime = temp.communicate(timeout=10)
+                os.remove(f"./Static/{unique_filename}")
+                end = time.time()
+                if runtime[1].decode('utf-8') == '':
+                    # print("Output: ")
+                    output = runtime[0].decode('utf-8')
+                    # print(output)
+                    time_taken = math.ceil((end - begin) * 1000)
+                    # print(f"Total runtime of the program is {time_taken}ms")
+                    response = {
+                        "Success": True,
+                        "Output": output,
+                        "Time:": time_taken
+                    }
+                    return response
+                else:
+                    # print("Error: ")
+                    error_ret = runtime[1].decode('utf-8')
+                    # print(error_ret)
+                    response = {
+                        "Success": False,
+                        "Type": "RunTime Error",
+                        "Error": error_ret
+                    }
+                    return response
+            except Exception as e:
+                print(str(e))
+                response = {
+                    "Success": False,
+                    "Type": "TLE"
+                }
+                return response
+        else:
+            response = {
+                "Success": False,
+                "Type": "Compile Error",
+                "Error": compiled[1].decode('utf-8')
+            }
+            return response
+    except Exception as e:
+        print(e)
+        response = {
+            "Success": False,
+            "Type": "Unknown Error",
+            "Error": str(e)
+        }
+        return response
+
