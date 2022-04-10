@@ -1,11 +1,12 @@
 import React from "react";
-// import { signInWithGoogle } from "../firebase/firebase.utils";
+import { signInWithGoogle } from "../firebase/firebase.utils";
 import { Button } from "react-bootstrap";
 export default function Login() {
   return (
     <Button
       variant="primary"
-      //   className="login-provider-button" /*onClick={signInWithGoogle}*/
+      className="login-provider-button"
+      onClick={signInWithGoogle}
     >
       {/* <img
         src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
