@@ -14,23 +14,24 @@ import "../styles/header.css";
 export default function Header() {
   return (
     <div className="header">
-      <Navbar bg="dark" expand="lg">
+      {/* <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand className="headerBrand" href="#home">
-            CompileAbhi
-          </Navbar.Brand>
+          <Navbar.Brand href="#home">Compile-Abhi</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              {/* <Nav.Link href="#home">Home</Nav.Link> */}
-              {/* add button CSS*/}
-              {/* add user state*/}
-              {/* <Login /> */}
-              {/* <Nav.Button>Login</Nav.Button> */}
+              <Nav.Link href="#home">Home</Nav.Link>
+              <Login />
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
+      <div className="heading">
+        <h3>Compile/Abhi</h3>
+      </div>
+      <div className="login">
+        <Login />
+      </div>
     </div>
   );
 }

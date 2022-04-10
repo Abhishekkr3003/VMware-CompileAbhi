@@ -1,3 +1,13 @@
 .headerBrand{
     color: white !important;
 }
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+.heading {
+    padding: 5px 10px
+}
+.login {
+    padding: 5px 10px
+}
