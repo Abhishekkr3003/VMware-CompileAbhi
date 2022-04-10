@@ -5,13 +5,22 @@ import React, { useState } from "react";
 import "../styles/io.css";
 import { Button, Form } from "react-bootstrap";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
+import { BiTimer } from "react-icons/bi";
+import { VscOutput } from "react-icons/vsc";
+import { setInputRedux } from "../actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function IO() {
   const [collapsed, setCollapsed] = useState(false);
   const [input, setInput] = useState("");
 
+  const output = useSelector((state) => state.output);
+
+  const dispatch = useDispatch();
+
   const onChange = (event) => {
     setInput(event.target.value);
+    dispatch(setInputRedux(event.target.value));
   };
 
   if (collapsed) {
@@ -53,10 +62,30 @@ export default function IO() {
         />
       </div>
       <div className="output">
-        <div className="outputHeading">Output</div>
+        <div className="outputHeading">
+          Output <VscOutput />
+        </div>
+        <div className="outputContent">
+          {output.Output != undefined &&
+            (output.Success ? (
+              <p className="success">{output.Output}</p>
+            ) : (
+              <p className="error">output.Output</p>
+            ))}
+        </div>
       </div>
       <div className="spaceTime">
-        <div className="spaceTimeHeading">Time Used</div>
+        <div className="spaceTimeHeading">
+          Time Used{" "}
+          <span style={{ fontSize: "1.3rem" }}>
+            <BiTimer />
+          </span>
+        </div>
+        <div className="spaceTimeContent">
+          {output.Output != undefined && (
+            <h1 className="timeUsed">{output.Time}</h1>
+          )}
+        </div>
       </div>
     </div>
   );

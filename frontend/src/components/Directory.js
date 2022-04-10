@@ -31,7 +31,7 @@ export default function Directory() {
   return (
     <div className="directory">
       <div className="dirFirstDiv">
-        <h1 className="dirFirstDivHeading">My Folder</h1>
+        <h1 className="dirFirstDivHeading">Directory</h1>
         <div>
           {/* <Button
             variant="outline-dark"

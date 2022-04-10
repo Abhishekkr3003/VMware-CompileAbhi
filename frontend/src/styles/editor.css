@@ -24,6 +24,43 @@
 
 .runButton{
     position: absolute;
-    bottom: 5%;
+    bottom: 2%;
     right: 2%;
+}
+
+.editorFilesOpenedHeading{
+    size: 1rem;
+    margin-top: 0.4%;
+    margin-left: 1%;
+    width: 8%;
+}
+
+.outputContent{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.success{
+
+}
+
+.error{
+    color: red;
+}
+
+.spaceTimeContent{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timeUsed{
+    color: green;
+    text-align: center;
 }
