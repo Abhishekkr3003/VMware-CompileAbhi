@@ -1,14 +1,36 @@
-import React from "react";
-import { AiOutlineFile, AiOutlineDelete } from "react-icons/ai";
+import React, { useState } from "react";
+import {
+  AiOutlineFile,
+  AiOutlineDelete,
+  AiOutlinePlusCircle,
+} from "react-icons/ai";
 import { CgRename } from "react-icons/cg";
 import { SiCplusplus, SiPython, SiC } from "react-icons/si";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setStructure, deleteStructure } from "../actions/index";
+import { addOpenFiles, setCodeRedux } from "../actions/index";
 
 import "../styles/file.css";
 
-export default function File({ name, id }) {
+export default function File({ file, name, id, onDelete, onRename }) {
+  const [takeInput, setTakeInput] = useState(false);
+  const [newItem, setNewItem] = useState("");
+
+  const onChangeName = (event) => {
+    setNewItem(event.target.value);
+  };
+
+  const submit = (event) => {
+    onRename(id, newItem);
+    setTakeInput(!takeInput);
+    event.stopPropogation();
+  };
+
+  const fileClick = () => {
+    dispatch(addOpenFiles(file));
+    dispatch(setCodeRedux(file.code));
+  };
+
   const ICONS = {
     c: <SiC />,
     cpp: <SiCplusplus />,
@@ -16,45 +38,59 @@ export default function File({ name, id }) {
   };
 
   const dispatch = useDispatch();
-  const structure = useSelector((state) => state.structure);
-
-  const onUpdate = (event) => {};
-
-  const onDelete = (event) => {
-    var payload = { itemId: id, structure: structure };
-    dispatch(deleteStructure(payload));
-  };
 
   var ext = name.split(".")[1];
 
+  //var ext = 0;
+
   return (
-    <div className="fileActionDiv">
-      <div className="fileDiv">
-        {ICONS[ext] || <AiOutlineFile />}
-        <span> {name}</span>
+    <div>
+      <div className="fileActionDiv">
+        <div className="fileDiv">
+          {ICONS[ext] || <AiOutlineFile />}
+          <span onClick={() => fileClick()}> {name}</span>
+        </div>
+        <div>
+          <Button
+            variant="outline-dark"
+            size="sm"
+            className="dirFirstDivButton"
+            onClick={() => {
+              onDelete(id);
+            }}
+          >
+            <AiOutlineDelete />
+          </Button>
+          <Button
+            variant="outline-dark"
+            size="sm"
+            className="dirFirstDivButton"
+            onClick={() => setTakeInput(!takeInput)}
+          >
+            <CgRename />
+          </Button>
+        </div>
       </div>
-      <div>
-        <Button
-          variant="outline-dark"
-          size="sm"
-          className="dirFirstDivButton"
-          onClick={(event) => {
-            onDelete(event);
-          }}
-        >
-          <AiOutlineDelete />
-        </Button>
-        <Button
-          variant="outline-dark"
-          size="sm"
-          className="dirFirstDivButton"
-          onClick={(event) => {
-            onUpdate(event);
-          }}
-        >
-          <CgRename />
-        </Button>
-      </div>
+      {takeInput && (
+        <Form className="folderForm">
+          <Form.Control
+            type="input"
+            value={newItem}
+            onChange={onChangeName}
+            name="name"
+            placeholder="Name.."
+          />
+          <Button
+            size="sm"
+            variant="dark"
+            onClick={(event) => submit(event)}
+            type="submit"
+            className="folderFormButton"
+          >
+            <AiOutlinePlusCircle />
+          </Button>
+        </Form>
+      )}
     </div>
   );
 }

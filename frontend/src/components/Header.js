@@ -14,18 +14,6 @@ import "../styles/header.css";
 export default function Header() {
   return (
     <div className="header">
-      {/* <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">Compile-Abhi</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Login />
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar> */}
       <div className="heading">
         <h3>Compile/Abhi</h3>
       </div>

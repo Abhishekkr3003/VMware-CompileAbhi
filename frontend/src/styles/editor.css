@@ -7,7 +7,7 @@
 .editorFilesOpened{
     height: 5.2%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     border-bottom: solid;
     border-bottom-width: 1px;
     border-bottom-color: #262626;
@@ -15,6 +15,7 @@
 
 .editFile{
     height: 95%;
+    overflow: auto;
 }
 
 .code{
@@ -35,32 +36,33 @@
     width: 8%;
 }
 
-.outputContent{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.textareaClassName {
     overflow: auto;
 }
 
-.success{
-
+.fileNameButton{
+    margin: auto 1%;
+    border: none;
+    color: black;
 }
 
-.error{
-    color: red;
+.fileBarActionDiv{
+    display: flex;
+    flex-direction: row;
 }
 
-.spaceTimeContent{
-    width: 100%;
-    height: 100%;
+.noFile{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.timeUsed{
-    color: green;
-    text-align: center;
+.noFileHeading{
+    font-size: 1.5rem;
 }
+
+.noFileHeading svg{
+    margin-bottom: 2%;
+}
+
+

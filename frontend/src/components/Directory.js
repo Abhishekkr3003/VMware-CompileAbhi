@@ -5,16 +5,11 @@ import "../styles/directory.css";
 import { Button } from "react-bootstrap";
 import Tree from "./Tree";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setStructure } from "../actions";
 
 export default function Directory() {
   const [collapsed, setCollapsed] = useState(false);
-
-  const structure = useSelector((state) => state.structure);
-
-  useEffect(() => {}, [structure]);
-
-  console.log(structure);
 
   if (collapsed) {
     return (
@@ -33,20 +28,6 @@ export default function Directory() {
       <div className="dirFirstDiv">
         <h1 className="dirFirstDivHeading">Directory</h1>
         <div>
-          {/* <Button
-            variant="outline-dark"
-            size="sm"
-            className="dirFirstDivButton"
-          >
-            <AiFillFileAdd />
-          </Button>
-          <Button
-            variant="outline-dark"
-            size="sm"
-            className="dirFirstDivButton"
-          >
-            <AiFillFolderAdd />
-          </Button> */}
           <Button
             variant="outline-dark"
             size="sm"
@@ -58,7 +39,7 @@ export default function Directory() {
         </div>
       </div>
       <div className="dirTree">
-        <Tree structure={structure} />
+        <Tree />
       </div>
     </div>
   );

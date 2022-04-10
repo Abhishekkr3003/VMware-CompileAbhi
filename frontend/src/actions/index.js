@@ -5,23 +5,30 @@ export const setStructure = (structure) => {
   };
 };
 
-export const updateStructure = (payload) => {
+export const addFile = (payload) => {
   return {
-    type: "UPDATESTRUCTURE",
+    type: "ADDFILE",
     payload: payload,
   };
 };
 
-export const createStructure = (payload) => {
+export const renameFile = (payload) => {
   return {
-    type: "CREATESTRUCTURE",
+    type: "RENAMEFILE",
     payload: payload,
   };
 };
 
-export const deleteStructure = (payload) => {
+export const deleteFile = (payload) => {
   return {
-    type: "DELETESTRUCTURE",
+    type: "DELETEFILE",
+    payload: payload,
+  };
+};
+
+export const editFileCode = (payload) => {
+  return {
+    type: "EDITFILECODE",
     payload: payload,
   };
 };
@@ -68,9 +75,24 @@ export const addOpenFiles = (file) => {
   };
 };
 
-export const deletOpenFiles = (itemId) => {
+export const deleteOpenFiles = (itemId) => {
   return {
     type: "DELETEOPENFILES",
     payload: itemId,
+  };
+};
+
+export const editOpenFileCode = (payload) => {
+  return {
+    type: "EDITOPENFILECODE",
+    payload: payload,
+  };
+};
+
+export const renameOpenFile = (payload) => {
+  //console.log("action-hit");
+  return {
+    type: "RENAMEOPENFILE",
+    payload: payload,
   };
 };

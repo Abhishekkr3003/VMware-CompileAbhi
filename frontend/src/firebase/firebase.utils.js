@@ -2,8 +2,6 @@ import firebase from "firebase/compat/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import "firebase/firestore";
 import "firebase/compat/auth";
-import { setUser } from "../actions/index";
-import { useDispatch } from "react-redux";
 
 // import "firebase/firestore";
 // import "firebase/auth";

@@ -1,6 +1,6 @@
 // input and output
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../styles/io.css";
 import { Button, Form } from "react-bootstrap";
@@ -15,6 +15,13 @@ export default function IO() {
   const [input, setInput] = useState("");
 
   const output = useSelector((state) => state.output);
+  const persistInput = useSelector((state) => state.input);
+
+  useEffect(() => {
+    setInput(persistInput);
+  }, []);
+
+  console.log(output);
 
   const dispatch = useDispatch();
 
@@ -48,7 +55,7 @@ export default function IO() {
             <AiOutlineDoubleRight />
           </Button>
         </div>
-        <h1 className="dirFirstDivHeading">I/O</h1>
+        <h1 className="dirFirstDivHeading">Input/Output</h1>
       </div>
       <div className="input">
         <Form.Control
@@ -66,11 +73,11 @@ export default function IO() {
           Output <VscOutput />
         </div>
         <div className="outputContent">
-          {output.Output != undefined &&
+          {output.Success != undefined &&
             (output.Success ? (
               <p className="success">{output.Output}</p>
             ) : (
-              <p className="error">output.Output</p>
+              <p className="error">{output.Error}</p>
             ))}
         </div>
       </div>
@@ -82,9 +89,14 @@ export default function IO() {
           </span>
         </div>
         <div className="spaceTimeContent">
-          {output.Output != undefined && (
-            <h1 className="timeUsed">{output.Time}</h1>
-          )}
+          {output.Success != undefined &&
+            (output.Success ? (
+              <h1 className="timeUsed">{output.Time}ms</h1>
+            ) : (
+              <b>
+                <p className="error">{output.Type}</p>
+              </b>
+            ))}
         </div>
       </div>
     </div>

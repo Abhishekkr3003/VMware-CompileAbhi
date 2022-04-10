@@ -1,29 +1,34 @@
 import { create, update, dlte } from "../utility/dirCRUD";
 import axios from "axios";
+import { nanoid } from "nanoid";
 
 const structureReducer = (state = [], action) => {
   switch (action.type) {
     case "SETSTRUCTURE":
       return action.payload;
-    case "DELETESTRUCTURE":
-      var structure = action.payload.structure;
+    case "DELETEFILE":
       var itemId = action.payload.itemId;
-      var newStructure = dlte(structure, itemId);
-      return newStructure;
-    case "UPDATESTRUCTURE":
-      var structure = action.payload.structure;
-      var itemId = action.payload.itemId;
-      var name = action.payload.name;
-      var newStructure = update(name, itemId, structure);
-      return newStructure;
-    case "CREATESTRUCTURE":
-      var structure = action.payload.structure;
-      var folderId = action.payload.folderId;
-      var type = action.payload.type;
-      var name = action.payload.name;
-      console.log("createStructureTriggered");
-      var newStructure = create(type, name, folderId, structure);
-      return newStructure;
+      return state.filter((element) => element.id !== itemId);
+    case "RENAMEFILE":
+      itemId = action.payload.itemId;
+      let index = state.findIndex((file) => file.id === itemId);
+      const newArray = [...state];
+      newArray[index].name = action.payload.name;
+      return newArray;
+    case "ADDFILE":
+      var newFile = {
+        name: action.payload.name,
+        type: "file",
+        code: action.payload.code,
+        id: action.payload.id,
+      };
+      return [...state, newFile];
+    case "EDITFILECODE":
+      itemId = action.payload.itemId;
+      let index2 = state.findIndex((file) => file.id === itemId);
+      const newArray2 = [...state];
+      newArray2[index2].code = action.payload.code;
+      return newArray2;
     default:
       return state;
   }
