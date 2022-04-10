@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import File from "./File";
 import Folder from "./Folder";
-import { AiOutlineFile, AiOutlineFolder } from "react-icons/ai";
-import { SiCplusplus, SiPython, SiC } from "react-icons/si";
 
 export default function Tree({ structure }) {
   return structure.map((item) => {

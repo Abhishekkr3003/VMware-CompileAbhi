@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 export default function Login() {
   return (
     <Button
-      variant="primary"
+      variant="light"
       //   className="login-provider-button" /*onClick={signInWithGoogle}*/
     >
       {/* <img

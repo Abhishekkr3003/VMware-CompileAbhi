@@ -39,3 +39,38 @@ export const removeUser = () => {
     payload: {},
   };
 };
+
+export const setCodeRedux = (code) => {
+  return {
+    type: "SETCODE",
+    payload: code,
+  };
+};
+
+export const setInputRedux = (input) => {
+  return {
+    type: "SETINPUT",
+    payload: input,
+  };
+};
+
+export const setOutputRedux = (Output) => {
+  return {
+    type: "SETOUTPUT",
+    payload: Output,
+  };
+};
+
+export const addOpenFiles = (file) => {
+  return {
+    type: "ADDOPENFILES",
+    payload: file,
+  };
+};
+
+export const deletOpenFiles = (itemId) => {
+  return {
+    type: "DELETEOPENFILES",
+    payload: itemId,
+  };
+};
