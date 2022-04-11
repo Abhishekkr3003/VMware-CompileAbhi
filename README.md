@@ -7,11 +7,13 @@
 
 ## Endpoints
 
-| Type  |     Route      |                Path Parameters                |                                                                        Description                                                                         |
-| :---: | :------------: | :-------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|  GET  |       /        |                       -                       |                                                                  Check server is running                                                                   |
-| POST  |     /user      | userId, Optional ( [name], [email], [dp url]) |                                      Add user information in database if user is signing up else return the user data                                      |
-| POST  |    /publish    |             file, fileId, userId              |                                                     To update the changes of file in Firebase Storage                                                      |
-| PATCH | /new-directory |          userId, directoryStructure           |                                               Update the directory sructure, when adding new file or folder                                                |
-| POST  |  /submission   |              code, input (file)               |     Execute the code and returns the output and execution time in ms, else return error and type of error and its description    [Parameters in FILE]      |
-| POST  |     /test      |              code, input (json)               | Execute the code and returns the output and execution time in ms, else return error and type of error and its description             [Parameters in JSON] | **** |
+|  Type  |    Route     |                Path Parameters                |                                              Description                                               |
+| :----: | :----------: | :-------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
+|  GET   |      /       |                       -                       |                                        Check server is running                                         |
+|  POST  |    /user     | userId, Optional ( [name], [email], [dp url]) |            Add user information in database if user is signing up else return the user data            |
+|  POST  |  /add-file   |       type, name, code, fileId, userId        |                               Adds new file in the directory of the user                               |
+|  POST  |  /read-file  |                userId, fileId                 |                            Read the code and other mata-data about the file                            |
+| PATCH  | /update-file |       type, name, code, fileId, userId        |                           Updates the code and the meta-data about the file                            |
+| DELETE | /delete-file |       type, name, code, fileId, userId        |                          Deletes the file and the metadata from the database                           |
+|  POST  | /submission  |                  code, input                  | Executes the code and return output of code if no error occured otherwise returns description of error |
+|  POST  |  /directory  |                    userId                     |                              Fetches the directory structure of the user                               | **** |
