@@ -34,6 +34,7 @@ export const editFileCode = (payload) => {
 };
 
 export const openFile = (itemId) => {
+  console.log(itemId);
   return {
     type: "OPENFILE",
     payload: itemId,

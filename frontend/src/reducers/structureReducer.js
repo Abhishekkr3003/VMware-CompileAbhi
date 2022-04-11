@@ -22,7 +22,7 @@ const structureReducer = (state = [], action) => {
         name: action.payload.name,
         type: "file",
         code: action.payload.code,
-        id: action.payload.fileId,
+        id: action.payload.id,
         isOpen: false,
       };
       return [...state, newFile];
@@ -34,6 +34,7 @@ const structureReducer = (state = [], action) => {
       return newArray2;
     case "OPENFILE":
       itemId = action.payload;
+      console.log(itemId);
       let index3 = state.findIndex((file) => file.id === itemId);
       console.log(index3);
       const newArray3 = [...state];

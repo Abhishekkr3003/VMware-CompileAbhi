@@ -21,6 +21,10 @@ import axios from "axios";
 import { BsClock, BsFillFileEarmarkCodeFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 
+//import { Controlled as CodeMirror } from "react-codemirror2";
+// require("codemirror/mode/xml/xml");
+// require("codemirror/mode/javascript/javascript");
+
 export default function MyEditor() {
   const [code, setCode] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -50,15 +54,14 @@ export default function MyEditor() {
       input: input,
       code: code,
     };
-    const response = await axios.post("http://3.108.190.41/test", data);
+    const response = await axios.post("http://3.108.190.41/submission", data);
     if (user.userId != undefined) {
       const payload = {
         userId: user.userId,
         fileId: currentFile.id,
         code: code,
-        name: currentFile.name,
-        // isOpen: file.isOpen,
       };
+      console.log(payload);
       await axios.patch("http://3.108.190.41/update-file", payload);
     }
     setLoading(false);
@@ -66,15 +69,48 @@ export default function MyEditor() {
   };
 
   const onRemoveFile = (id) => {
+    if (currentFile.id == id) {
+      setCurrentFile({});
+      setCode("");
+    }
     dispatch(deleteOpenFiles(id));
     dispatch(closeFile(id));
     setDummy(!dummy);
   };
 
-  if (openFiles.length === 0) {
+  console.log(currentFile);
+
+  if (openFiles.length === 0 || currentFile.id === undefined) {
     return (
       <div className="editor">
-        <div className="editorFilesOpened"></div>
+        <div className="editorFilesOpened">
+          {files.map((file) => {
+            return (
+              file.isOpen && (
+                <div key={file.id} className="fileBarActionDiv">
+                  <Button
+                    className="fileNameButton"
+                    variant="outline-dark"
+                    onClick={() => {
+                      setCurrentFile(file);
+                      setCode(file.code);
+                      dispatch(setCodeRedux(file.code));
+                    }}
+                  >
+                    {file.name}
+                  </Button>
+                  <Button
+                    onClick={() => onRemoveFile(file.id)}
+                    className="fileNameButton"
+                    variant="outline-dark"
+                  >
+                    <AiOutlineClose />
+                  </Button>
+                </div>
+              )
+            );
+          })}
+        </div>
         <div className="editFile noFile">
           <h1 className="noFileHeading">
             Click a file to edit <BsFillFileEarmarkCodeFill />

@@ -40,16 +40,22 @@ export default function Tree() {
 
   const submit = async (event) => {
     if (newItem != "") {
-      let payload = {
+      let data = {
         type: "file",
         name: newItem,
         code: "",
-        fileId: nanoid(),
-        userId: undefined,
+        id: nanoid(),
       };
-      dispatch(addFile(payload));
+      dispatch(addFile(data));
 
       if (user.userId != undefined) {
+        let payload = {
+          type: "file",
+          name: newItem,
+          code: "",
+          fileId: nanoid(),
+          userId: user.userId,
+        };
         payload.userId = user.userId;
         console.log(payload);
         await axios.post("http://3.108.190.41/add-file", payload);
@@ -72,7 +78,7 @@ export default function Tree() {
         fileId: id,
       };
       console.log(payload);
-      await axios.delete("http://3.108.190.41/delete-file", payload);
+      await axios.delete("http://3.108.190.41/delete-file", { data: payload });
     }
   };
 
