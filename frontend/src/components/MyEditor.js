@@ -20,10 +20,24 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BsClock, BsFillFileEarmarkCodeFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/dracula.css";
+import "codemirror/theme/material.css";
+import "codemirror/theme/base16-dark.css";
 
-//import { Controlled as CodeMirror } from "react-codemirror2";
-// require("codemirror/mode/xml/xml");
-// require("codemirror/mode/javascript/javascript");
+import "codemirror/theme/mdn-like.css";
+import "codemirror/theme/the-matrix.css";
+import "codemirror/theme/night.css";
+
+import "codemirror/mode/xml/xml";
+import "codemirror/mode/javascript/javascript";
+import "codemirror/mode/css/css";
+import "codemirror/mode/clike/clike";
+
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/closetag";
+
+import { Controlled as ControlledEditorComponent } from "react-codemirror2";
 
 export default function MyEditor() {
   const [code, setCode] = useState("");
@@ -58,7 +72,7 @@ export default function MyEditor() {
     if (user.userId != undefined) {
       const payload = {
         userId: user.userId,
-        fileId: currentFile.id,
+        id: currentFile.id,
         code: code,
       };
       console.log(payload);
@@ -77,8 +91,6 @@ export default function MyEditor() {
     dispatch(closeFile(id));
     setDummy(!dummy);
   };
-
-  console.log(currentFile);
 
   if (openFiles.length === 0 || currentFile.id === undefined) {
     return (
@@ -120,6 +132,19 @@ export default function MyEditor() {
     );
   }
 
+  const handleChange = (editor, data, code) => {
+    setCode(code);
+    dispatch(setCodeRedux(code));
+    console.log(currentFile);
+    const data2 = {
+      itemId: currentFile.id,
+      code: code,
+    };
+    console.log(data2);
+    dispatch(editFileCode(data2));
+    dispatch(editOpenFileCode(data2));
+  };
+
   return (
     <div className="editor">
       <div className="editorFilesOpened">
@@ -151,7 +176,7 @@ export default function MyEditor() {
         })}
       </div>
       <div className="editFile">
-        <Editor
+        {/* <Editor
           value={code}
           onValueChange={(code) => {
             setCode(code);
@@ -173,10 +198,24 @@ export default function MyEditor() {
             fontSize: "1rem",
             height: "100%",
           }}
+        /> */}
+        <ControlledEditorComponent
+          onBeforeChange={handleChange}
+          value={code}
+          className="textareaClassName"
+          options={{
+            lineWrapping: true,
+            lint: true,
+            mode: "clike",
+            lineNumbers: true,
+            theme: "base16-dark",
+            autoCloseTags: true,
+            autoCloseBrackets: true,
+          }}
         />
         {isLoading ? (
           <Button
-            variant="dark"
+            variant="light"
             className="runButton"
             onClick={submit}
             disabled
@@ -184,7 +223,7 @@ export default function MyEditor() {
             Loading <BsClock />
           </Button>
         ) : (
-          <Button variant="dark" className="runButton" onClick={submit}>
+          <Button variant="light" className="runButton" onClick={submit}>
             Run Code <VscRocket />
           </Button>
         )}

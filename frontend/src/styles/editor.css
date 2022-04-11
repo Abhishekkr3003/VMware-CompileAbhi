@@ -65,4 +65,8 @@
     margin-bottom: 2%;
 }
 
+.CodeMirror{
+    height: 88vh !important;
+}
+
 
