@@ -68,7 +68,10 @@ export default function MyEditor() {
       input: input,
       code: code,
     };
-    const response = await axios.post("http://3.108.190.41/submission", data);
+    const response = await axios.post(
+      "http://3.108.190.41:8080/submission",
+      data
+    );
     if (user.userId != undefined) {
       const payload = {
         userId: user.userId,
@@ -76,7 +79,7 @@ export default function MyEditor() {
         code: code,
       };
       console.log(payload);
-      await axios.patch("http://3.108.190.41/update-file", payload);
+      await axios.patch("http://3.108.190.41:8080/update-file", payload);
     }
     setLoading(false);
     dispatch(setOutputRedux(response.data));

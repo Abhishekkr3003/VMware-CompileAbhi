@@ -22,7 +22,7 @@ export default function Login() {
       "dp URL": data.photoURL,
     };
     dispatch(setUser(payload));
-    const res = await axios.post("http://3.108.190.41/user", payload);
+    const res = await axios.post("http://3.108.190.41:8080/user", payload);
     dispatch(setStructure(res.data.files));
     console.log(res.data);
   };

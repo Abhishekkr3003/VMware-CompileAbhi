@@ -9,6 +9,7 @@ import { BiTimer } from "react-icons/bi";
 import { VscOutput } from "react-icons/vsc";
 import { setInputRedux } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
+import { FcGoogle } from "react-icons/fc";
 
 export default function IO() {
   const [collapsed, setCollapsed] = useState(false);
@@ -77,7 +78,16 @@ export default function IO() {
             (output.Success ? (
               <p className="success">{output.Output}</p>
             ) : (
-              <p className="error">{output.Error}</p>
+              <div className="error-div">
+                <p className="error">{output.Error}</p>
+                <div>
+                  <Button variant="outline-light">
+                    <a href={`http://google.com/`} target="_blank">
+                      <FcGoogle />
+                    </a>
+                  </Button>
+                </div>
+              </div>
             ))}
         </div>
       </div>

@@ -58,7 +58,7 @@ export default function Tree() {
         };
         payload.userId = user.userId;
         console.log(payload);
-        await axios.post("http://3.108.190.41/add-file", payload);
+        await axios.post("http://3.108.190.41:8080/add-file", payload);
       }
     } else {
       toast.error("File Name Cannot Be Empty!");
@@ -78,7 +78,9 @@ export default function Tree() {
         fileId: id,
       };
       console.log(payload);
-      await axios.delete("http://3.108.190.41/delete-file", { data: payload });
+      await axios.delete("http://3.108.190.41:8080/delete-file", {
+        data: payload,
+      });
     }
   };
 
@@ -95,7 +97,7 @@ export default function Tree() {
         name: name,
         // isOpen: file.isOpen,
       };
-      await axios.patch("http://3.108.190.41/update-file", payload);
+      await axios.patch("http://3.108.190.41:8080/update-file", payload);
     }
   };
 

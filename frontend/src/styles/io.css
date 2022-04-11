@@ -88,3 +88,26 @@
     size: 1rem;
 }
 
+.error-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
+.error-div button{
+    margin-bottom: 10%;
+}
+
+.error-div a{
+    text-decoration: none;
+    color: #262626;
+}
+
+.error-div a:hover{
+    text-decoration: none;
+    color: white;
+}
+
+
