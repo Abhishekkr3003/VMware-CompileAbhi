@@ -5,7 +5,9 @@ import { nanoid } from "nanoid";
 const structureReducer = (state = [], action) => {
   switch (action.type) {
     case "SETSTRUCTURE":
-      return action.payload;
+      console.log(action.payload);
+      const newS = [...action.payload];
+      return newS;
     case "DELETEFILE":
       var itemId = action.payload.itemId;
       return state.filter((element) => element.id !== itemId);
@@ -20,7 +22,8 @@ const structureReducer = (state = [], action) => {
         name: action.payload.name,
         type: "file",
         code: action.payload.code,
-        id: action.payload.id,
+        id: action.payload.fileId,
+        isOpen: false,
       };
       return [...state, newFile];
     case "EDITFILECODE":
@@ -29,6 +32,20 @@ const structureReducer = (state = [], action) => {
       const newArray2 = [...state];
       newArray2[index2].code = action.payload.code;
       return newArray2;
+    case "OPENFILE":
+      itemId = action.payload;
+      let index3 = state.findIndex((file) => file.id === itemId);
+      console.log(index3);
+      const newArray3 = [...state];
+      newArray3[index3].isOpen = true;
+      return newArray3;
+    case "CLOSEFILE":
+      itemId = action.payload;
+      let index4 = state.findIndex((file) => file.id === itemId);
+      console.log(index4);
+      const newArray4 = [...state];
+      newArray4[index4].isOpen = false;
+      return newArray4;
     default:
       return state;
   }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { signInWithGoogle } from "../firebase/firebase.utils";
 // import { getAuth, signOut } from "firebase/auth";
 import { Button } from "react-bootstrap";
-import { setUser, removeUser } from "../actions/index";
+import { setUser, removeUser, setStructure } from "../actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
@@ -23,6 +23,7 @@ export default function Login() {
     };
     dispatch(setUser(payload));
     const res = await axios.post("http://3.108.190.41/user", payload);
+    dispatch(setStructure(res.data.files));
     console.log(res.data);
   };
 

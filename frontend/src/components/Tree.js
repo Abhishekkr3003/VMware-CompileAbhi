@@ -40,17 +40,18 @@ export default function Tree() {
 
   const submit = async (event) => {
     if (newItem != "") {
-      var payload = {
+      let payload = {
         type: "file",
         name: newItem,
         code: "",
-        id: nanoid(),
+        fileId: nanoid(),
         userId: undefined,
       };
       dispatch(addFile(payload));
 
       if (user.userId != undefined) {
         payload.userId = user.userId;
+        console.log(payload);
         await axios.post("http://3.108.190.41/add-file", payload);
       }
     } else {
@@ -60,18 +61,36 @@ export default function Tree() {
     event.preventDefault();
   };
 
-  const onDelete = (id) => {
+  const onDelete = async (id) => {
     var payload = { itemId: id };
     dispatch(deleteFile(payload));
     dispatch(deleteOpenFiles(id));
     setDummy(!dummy);
+    if (user.userId != undefined) {
+      const payload = {
+        userId: user.userId,
+        fileId: id,
+      };
+      console.log(payload);
+      await axios.delete("http://3.108.190.41/delete-file", payload);
+    }
   };
 
-  const onRename = (id, name) => {
+  const onRename = async (id, name, file) => {
+    console.log();
     var payload = { itemId: id, name: name };
     dispatch(renameFile(payload));
-    dispatch(renameOpenFile(payload));
     setDummy(!dummy);
+    if (user.userId != undefined) {
+      const payload = {
+        userId: user.userId,
+        fileId: id,
+        code: file.code,
+        name: name,
+        // isOpen: file.isOpen,
+      };
+      await axios.patch("http://3.108.190.41/update-file", payload);
+    }
   };
 
   return (

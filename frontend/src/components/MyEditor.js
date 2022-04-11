@@ -14,6 +14,7 @@ import {
   deleteOpenFiles,
   editFileCode,
   editOpenFileCode,
+  closeFile,
 } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -29,6 +30,8 @@ export default function MyEditor() {
   const input = useSelector((state) => state.input);
   const persistCode = useSelector((state) => state.code);
   const openFiles = useSelector((state) => state.openFiles);
+  const files = useSelector((state) => state.structure);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     setCode(persistCode);
@@ -48,12 +51,23 @@ export default function MyEditor() {
       code: code,
     };
     const response = await axios.post("http://3.108.190.41/test", data);
+    if (user.userId != undefined) {
+      const payload = {
+        userId: user.userId,
+        fileId: currentFile.id,
+        code: code,
+        name: currentFile.name,
+        // isOpen: file.isOpen,
+      };
+      await axios.patch("http://3.108.190.41/update-file", payload);
+    }
     setLoading(false);
     dispatch(setOutputRedux(response.data));
   };
 
   const onRemoveFile = (id) => {
     dispatch(deleteOpenFiles(id));
+    dispatch(closeFile(id));
     setDummy(!dummy);
   };
 
@@ -73,30 +87,30 @@ export default function MyEditor() {
   return (
     <div className="editor">
       <div className="editorFilesOpened">
-        {openFiles.map((file) => {
+        {files.map((file) => {
           return (
-            <div key={file.id} className="fileBarActionDiv">
-              <Button
-                className="fileNameButton"
-                variant="outline-dark"
-                onClick={() => {
-                  //console.log(file);
-                  setCurrentFile(file);
-                  //console.log(currentFile);
-                  setCode(file.code);
-                  dispatch(setCodeRedux(file.code));
-                }}
-              >
-                {file.name}
-              </Button>
-              <Button
-                onClick={() => onRemoveFile(file.id)}
-                className="fileNameButton"
-                variant="outline-dark"
-              >
-                <AiOutlineClose />
-              </Button>
-            </div>
+            file.isOpen && (
+              <div key={file.id} className="fileBarActionDiv">
+                <Button
+                  className="fileNameButton"
+                  variant="outline-dark"
+                  onClick={() => {
+                    setCurrentFile(file);
+                    setCode(file.code);
+                    dispatch(setCodeRedux(file.code));
+                  }}
+                >
+                  {file.name}
+                </Button>
+                <Button
+                  onClick={() => onRemoveFile(file.id)}
+                  className="fileNameButton"
+                  variant="outline-dark"
+                >
+                  <AiOutlineClose />
+                </Button>
+              </div>
+            )
           );
         })}
       </div>

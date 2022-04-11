@@ -8,7 +8,7 @@ import { CgRename } from "react-icons/cg";
 import { SiCplusplus, SiPython, SiC } from "react-icons/si";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addOpenFiles, setCodeRedux } from "../actions/index";
+import { addOpenFiles, setCodeRedux, openFile } from "../actions/index";
 
 import "../styles/file.css";
 
@@ -21,7 +21,7 @@ export default function File({ file, name, id, onDelete, onRename }) {
   };
 
   const submit = (event) => {
-    onRename(id, newItem);
+    onRename(id, newItem, file);
     setTakeInput(!takeInput);
     event.stopPropogation();
   };
@@ -29,6 +29,7 @@ export default function File({ file, name, id, onDelete, onRename }) {
   const fileClick = () => {
     dispatch(addOpenFiles(file));
     dispatch(setCodeRedux(file.code));
+    dispatch(openFile(id));
   };
 
   const ICONS = {
